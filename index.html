@@ -3,312 +3,563 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ayan Tejani | Cloud & Automation Engineer</title>
+  <title>Ayan Tejani | M365 &amp; Cloud Systems Administrator who builds</title>
+  <meta name="description" content="AZ-104 certified Microsoft 365 / Cloud &amp; Systems Administrator who architects and ships, combining tenant administration, identity &amp; access, and Power Platform automation with full-stack development."/>
   <link rel="icon" href="https://img.icons8.com/fluency/48/cloud.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
     :root {
-      --bg: #0f0f1a;
-      --card: rgba(30, 35, 70, 0.45);
-      --accent: #00d4ff;
-      --text: #e0e7ff;
-      --text-light: #94a3b8;
+      --bg:       #04060f;
+      --text:     #e6edff;
+      --text-dim: #93a4c8;
+      --line:     rgba(120,170,255,0.14);
+      --accent:   #38e1ff;          /* shifts per section via JS */
+      --accent-2: #6366f1;
     }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
-    .glass { background: var(--card); backdrop-filter: blur(16px); border: 1px solid rgba(0,212,255,0.15); }
-    .glow { box-shadow: 0 0 30px rgba(0,212,255,0.3); }
-    .animate-fade { animation: fadeIn 1s ease-out forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-    .nav-active { border-bottom: 3px solid var(--accent); padding-bottom: 8px; }
+    * { scroll-behavior: smooth; }
+    html, body { overflow-x: clip; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); position: relative; }
+    h1,h2,h3,.font-display { font-family: 'Space Grotesk','Inter',sans-serif; letter-spacing: -0.01em; }
+
+    /* ===== Stacked, cross-fading backgrounds (one per section theme) ===== */
+    .bg-stack { position: fixed; inset: 0; z-index: -3; }
+    .bg-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; }
+    .bg-layer.active { opacity: 1; }
+    .bg-layer[data-bg="space"]  { background:
+        radial-gradient(1200px 800px at 75% -10%, rgba(56,189,248,0.22), transparent 60%),
+        radial-gradient(1000px 700px at 8% 110%, rgba(99,102,241,0.20), transparent 55%),
+        linear-gradient(180deg,#04060f 0%,#070b1d 60%,#0a1230 100%); }
+    .bg-layer[data-bg="dawn"]   { background:
+        radial-gradient(1100px 800px at 15% -5%, rgba(122,162,255,0.22), transparent 60%),
+        radial-gradient(900px 700px at 90% 100%, rgba(56,189,248,0.16), transparent 55%),
+        linear-gradient(180deg,#05071a 0%,#0a1030 55%,#0c1640 100%); }
+    .bg-layer[data-bg="nebula"] { background:
+        radial-gradient(1200px 800px at 80% 0%, rgba(168,85,247,0.26), transparent 60%),
+        radial-gradient(900px 700px at 10% 100%, rgba(236,72,153,0.14), transparent 55%),
+        linear-gradient(180deg,#0a0618 0%,#140a2e 55%,#1a0f3a 100%); }
+    .bg-layer[data-bg="aurora"] { background:
+        radial-gradient(1100px 800px at 20% 0%, rgba(45,212,191,0.22), transparent 60%),
+        radial-gradient(1000px 700px at 85% 100%, rgba(56,189,248,0.18), transparent 55%),
+        linear-gradient(180deg,#03100f 0%,#061626 55%,#08202e 100%); }
+    .bg-layer[data-bg="deep"]   { background:
+        radial-gradient(1200px 900px at 60% -10%, rgba(99,102,241,0.26), transparent 60%),
+        radial-gradient(900px 700px at 5% 100%, rgba(168,85,247,0.16), transparent 55%),
+        linear-gradient(180deg,#04050f 0%,#080a22 55%,#0b0f33 100%); }
+
+    #stars { position: fixed; inset: 0; z-index: -2; display: block; }
+
+    /* Morphing nebula blobs (use the live accent) */
+    .nebula { position: fixed; z-index: -2; border-radius: 50%; filter: blur(80px); opacity: .4;
+      pointer-events: none; mix-blend-mode: screen;
+      animation: morph 18s ease-in-out infinite, drift 28s ease-in-out infinite alternate;
+      background: radial-gradient(circle at 35% 35%, var(--accent), transparent 70%);
+      transition: background 1.4s ease; will-change: transform, border-radius; }
+    .nebula.a { width: 46vw; height: 46vw; top: -8vw; right: -6vw; }
+    .nebula.b { width: 40vw; height: 40vw; bottom: -10vw; left: -8vw; animation-delay:-6s,-9s;
+      background: radial-gradient(circle at 60% 40%, var(--accent-2), transparent 70%); }
+    @keyframes morph {
+      0%,100% { border-radius: 42% 58% 63% 37% / 42% 45% 55% 58%; }
+      33%     { border-radius: 67% 33% 38% 62% / 63% 62% 38% 37%; }
+      66%     { border-radius: 39% 61% 55% 45% / 58% 38% 62% 42%; } }
+    @keyframes drift { from{transform:translate3d(0,0,0) scale(1)} to{transform:translate3d(4vw,3vw,0) scale(1.12)} }
+
+    /* ===== Glass / glow ===== */
+    .glass { background: linear-gradient(160deg, rgba(20,30,66,0.5), rgba(10,16,40,0.38));
+      backdrop-filter: blur(14px); border: 1px solid var(--line);
+      box-shadow: 0 10px 40px -12px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.04); }
+    .card-hover { transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s, border-color .45s; }
+    .card-hover:hover { transform: translateY(-6px);
+      border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+      box-shadow: 0 24px 60px -20px color-mix(in srgb, var(--accent) 55%, transparent), 0 0 0 1px color-mix(in srgb, var(--accent) 30%, transparent); }
+    .accent-text { background: linear-gradient(100deg, var(--accent), var(--accent-2) 70%);
+      -webkit-background-clip: text; background-clip: text; color: transparent; transition: none; }
+    .accent-bar { background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: background 1s ease; }
+
+    /* ===== Scroll reveal variants ===== */
+    .reveal { opacity:0; transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1); will-change: transform,opacity; }
+    .reveal.up    { transform: translateY(46px); }
+    .reveal.left  { transform: translateX(-60px); }
+    .reveal.right { transform: translateX(60px); }
+    .reveal.scale { transform: translateY(40px) scale(.93); }
+    .reveal.clip  { clip-path: inset(0 0 100% 0); transform: none; opacity: 1; }
+    .reveal.show  { opacity:1; transform:none; clip-path: inset(0 0 0 0); }
+    .stagger > * { opacity:0; transform: translateY(28px); transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+    .stagger.show > * { opacity:1; transform:none; }
+
+    /* Kinetic word reveal */
+    .kinetic .w { display:inline-block; overflow:hidden; vertical-align:top; }
+    .kinetic .w > span { display:inline-block; transform: translateY(110%); transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+    .kinetic.show .w > span { transform: translateY(0); }
+
+    #progress { position: fixed; top:0; left:0; height:3px; width:0%; z-index:60;
+      background: linear-gradient(90deg,var(--accent),var(--accent-2)); box-shadow: 0 0 12px var(--accent); transition: background 1s ease; }
+    .nav-link { position: relative; }
+    .nav-link::after { content:''; position:absolute; left:0; bottom:-6px; height:2px; width:0; background: var(--accent); transition: width .35s, background 1s; }
+    .nav-link:hover::after, .nav-link.active::after { width:100%; }
+
+    .chip { transition: transform .3s, box-shadow .3s; }
+    .chip:hover { transform: translateY(-3px); box-shadow: 0 8px 20px -8px var(--accent); }
+    .scroll-cue { animation: cue 1.8s ease-in-out infinite; }
+    @keyframes cue { 0%,100%{transform:translateY(0);opacity:.5} 50%{transform:translateY(8px);opacity:1} }
+
+    /* ===== Transparent cutout figure floating in the cosmos ===== */
+    .portrait-wrap { position: relative; width: clamp(270px,38vw,430px); aspect-ratio:1; margin:0 auto; animation: float 9s ease-in-out infinite; }
+    .portrait-wrap::before { /* glowing orb / planet behind the head */
+      content:''; position:absolute; left:50%; top:40%; width:78%; aspect-ratio:1; transform:translate(-50%,-50%);
+      border-radius:50%; z-index:0; pointer-events:none;
+      background: radial-gradient(circle, color-mix(in srgb, var(--accent) 50%, transparent), transparent 70%);
+      filter: blur(36px); opacity:.75; transition: background 1s ease; }
+    .portrait { position:relative; z-index:1; width:100%; height:100%; }
+    .portrait img { width:100%; height:100%; object-fit:contain; object-position:center bottom; display:block;
+      filter: drop-shadow(0 14px 34px rgba(0,0,0,.45));
+      -webkit-mask: linear-gradient(to bottom, #000 84%, transparent 99%);
+              mask: linear-gradient(to bottom, #000 84%, transparent 99%); }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+    .orb { position:absolute; border-radius:50%; background: radial-gradient(circle at 35% 30%, #fff, var(--accent) 40%, transparent 72%);
+      box-shadow: 0 0 24px 4px color-mix(in srgb, var(--accent) 60%, transparent); opacity:.7; animation: float 9s ease-in-out infinite; transition: background 1s; }
+
+    /* ===== Timeline (experience) ===== */
+    .timeline { position: relative; }
+    .timeline::before { content:''; position:absolute; left:18px; top:0; bottom:0; width:2px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2)); opacity:.5; transition: background 1s; }
+    .tl-item { position: relative; padding-left: 54px; }
+    .tl-dot { position:absolute; left:9px; top:6px; width:20px; height:20px; border-radius:50%;
+      background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 20%, transparent), 0 0 22px var(--accent); transition: background 1s; }
+
+    /* ===== Horizontal pinned projects ===== */
+    .hscroll-sticky { position: sticky; top:0; height:100vh; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
+    .hscroll-track { display:flex; gap:28px; padding: 0 6vw; will-change: transform; }
+    .hcard { flex: 0 0 clamp(300px, 78vw, 460px); }
+    .hbar-wrap { height:3px; background: rgba(255,255,255,.08); border-radius:9px; margin: 24px 6vw 0; overflow:hidden; }
+    .hbar { height:100%; width:0%; background: linear-gradient(90deg,var(--accent),var(--accent-2)); transition: background 1s; }
+    /* fallback: no horizontal scroll */
+    .no-h #projects .hscroll-section { height:auto !important; }
+    .no-h #projects .hscroll-sticky { position: static; height:auto; }
+    .no-h #projects .hscroll-track { flex-wrap: wrap; transform:none !important; justify-content:center; padding:0 1rem; }
+    .no-h #projects .hcard { flex: 1 1 340px; max-width: 460px; }
+    .no-h #projects .hbar-wrap { display:none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nebula,.orb,.scroll-cue,.portrait-wrap,.portrait-wrap::before { animation:none; }
+      .reveal,.stagger>*,.kinetic .w>span { transition:none; opacity:1; transform:none; clip-path:none; }
+    }
   </style>
 </head>
 <body class="min-h-screen">
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 left-0 right-0 z-50 glass backdrop-blur-xl border-b border-cyan-900/30">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-4">
-      <a href="#hero" class="text-lg font-extrabold tracking-[0.2em] text-cyan-300">AT</a>
-      <button id="navToggle" class="md:hidden w-11 h-11 flex items-center justify-center border border-cyan-700 rounded-full text-cyan-300" aria-label="Toggle navigation" aria-expanded="false">
-        <span class="sr-only">Menu</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h10" />
-        </svg>
+  <!-- Background layers -->
+  <div class="bg-stack" aria-hidden="true">
+    <div class="bg-layer active" data-bg="space"></div>
+    <div class="bg-layer" data-bg="dawn"></div>
+    <div class="bg-layer" data-bg="nebula"></div>
+    <div class="bg-layer" data-bg="aurora"></div>
+    <div class="bg-layer" data-bg="deep"></div>
+  </div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="nebula a" aria-hidden="true"></div>
+  <div class="nebula b" aria-hidden="true"></div>
+
+  <div id="progress"></div>
+
+  <!-- Nav -->
+  <nav class="fixed top-0 inset-x-0 z-50 glass border-b" style="border-color:var(--line)">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
+      <a href="#hero" class="font-display text-lg font-bold tracking-[0.25em] accent-text">AYAN&nbsp;TEJANI</a>
+      <button id="navToggle" class="md:hidden w-11 h-11 flex items-center justify-center border rounded-full text-cyan-200" style="border-color:var(--line)" aria-label="Toggle navigation" aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h10"/></svg>
       </button>
-      <div id="navMenu" class="hidden md:flex flex-col md:flex-row items-center gap-4 text-base font-medium">
-        <a href="#profile" class="hover:text-cyan-400 transition w-full text-center md:w-auto">Profile</a>
-        <a href="#skills" class="hover:text-cyan-400 transition w-full text-center md:w-auto">Skills</a>
-        <a href="#experience" class="hover:text-cyan-400 transition w-full text-center md:w-auto">Experience</a>
-        <a href="#projects" class="hover:text-cyan-400 transition w-full text-center md:w-auto">Projects</a>
-        <a href="#education" class="hover:text-cyan-400 transition w-full text-center md:w-auto">Education</a>
+      <div id="navMenu" class="hidden md:flex flex-col md:flex-row items-center gap-5 lg:gap-7 text-sm font-medium text-slate-200">
+        <a href="#about"      class="nav-link hover:text-white transition w-full text-center md:w-auto">About</a>
+        <a href="#skills"     class="nav-link hover:text-white transition w-full text-center md:w-auto">Skills</a>
+        <a href="#experience" class="nav-link hover:text-white transition w-full text-center md:w-auto">Experience</a>
+        <a href="#projects"   class="nav-link hover:text-white transition w-full text-center md:w-auto">Projects</a>
+        <a href="#education"  class="nav-link hover:text-white transition w-full text-center md:w-auto">Education</a>
+        <a href="Ayan%20Tejani%20Resume%20-%20M365%20Cloud%20Admin.pdf" target="_blank" rel="noopener" class="nav-link hover:text-white transition w-full text-center md:w-auto text-cyan-200">Resume</a>
       </div>
     </div>
   </nav>
 
   <!-- Hero -->
-  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-12 sm:pb-0">
-    <div class="absolute inset-0 bg-gradient-to-br from-cyan-900 via-indigo-900 to-purple-900 opacity-60"></div>
-      <div class="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-4 animate-fade" style="animation-delay: 0.2s">
-        AYAN TEJANI
-      </h1>
-        <p class="text-xl sm:text-2xl md:text-3xl lg:text-4xl mb-6 text-cyan-300 animate-fade" style="animation-delay: 0.4s">
-        Microsoft 365 & Cloud Automation Engineer
-      </p>
-        <p class="text-base sm:text-lg md:text-xl lg:text-2xl max-w-2xl mx-auto mb-10 text-gray-300 animate-fade" style="animation-delay: 0.6s">
-        AZ-104 Certified • Power Automate Specialist • 1,500+ hours saved annually with production automation
-      </p>
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center animate-fade" style="animation-delay: 0.8s">
-          <a href="#projects" class="px-6 sm:px-8 py-3 sm:py-4 bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-full transition glow w-full sm:w-auto text-center text-sm sm:text-base">
-            See My Work
-          </a>
-          <a href="https://www.linkedin.com/in/ayan-tejani-30b412106/" class="px-6 sm:px-8 py-3 sm:py-4 border-2 border-cyan-500 hover:bg-cyan-500 hover:text-black font-bold rounded-full transition w-full sm:w-auto text-center text-sm sm:text-base">
-            My Linkedin
-          </a>
-          <a href="https://drive.google.com/file/d/1T9w1-3UDMkQUPQRdnQ6DIEVwxOTDB3z3/view?usp=sharing" target="_blank" class="px-6 sm:px-8 py-3 sm:py-4 border-2 border-cyan-500 hover:bg-cyan-500 hover:text-black font-bold rounded-full transition w-full sm:w-auto text-center text-sm sm:text-base">
-            My Resume
-          </a>
-        </div>
+  <section id="hero" data-bg="space" data-accent="#38e1ff" data-accent2="#6366f1" class="relative min-h-screen flex items-center px-4 pt-28 pb-16">
+    <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <span class="orb" style="width:14px;height:14px;top:22%;left:14%;animation-delay:-1s"></span>
+      <span class="orb" style="width:9px;height:9px;top:28%;right:16%;animation-delay:-3s"></span>
+      <span class="orb" style="width:18px;height:18px;bottom:24%;left:22%;animation-delay:-5s;opacity:.6"></span>
     </div>
+    <div class="relative z-10 max-w-6xl mx-auto w-full grid lg:grid-cols-[1.15fr_0.85fr] items-center gap-10 lg:gap-14">
+      <div class="reveal scale order-1 lg:order-2 flex justify-center">
+        <div class="portrait-wrap">
+          <div class="portrait">
+            <img src="Ayan-cutout.png" alt="Portrait of Ayan Tejani" loading="eager" />
+          </div>
+        </div>
+      </div>
+      <div class="order-2 lg:order-1 text-center lg:text-left">
+        <p class="reveal up inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full glass text-xs sm:text-sm text-cyan-200 tracking-wide">
+          <span class="w-2 h-2 rounded-full bg-cyan-300 animate-pulse"></span>
+          AZ-104 Certified &nbsp;|&nbsp; Greater Toronto Area &nbsp;|&nbsp; Open to opportunities
+        </p>
+        <h1 class="kinetic text-5xl sm:text-6xl md:text-7xl font-bold mb-5 leading-[0.95] accent-text">
+          <span class="w"><span>AYAN</span></span> <span class="w"><span>TEJANI</span></span>
+        </h1>
+        <p class="reveal up text-xl sm:text-2xl md:text-3xl font-display font-medium text-slate-100 mb-5">
+          Microsoft 365 / Cloud &amp; Systems Administrator <span class="accent-text">who builds</span>
+        </p>
+        <p class="reveal up text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 mb-10 text-slate-300/90 leading-relaxed">
+          I both architect and ship: M365 tenant administration, identity &amp; access, and Power Platform automation,
+          combined with full-stack development. Production automation that saves <span class="text-cyan-200 font-semibold">1,500+ hours a year</span>.
+        </p>
+        <div class="reveal up flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center">
+          <a href="#projects" class="px-7 py-3.5 rounded-full font-semibold text-[#04060f] bg-gradient-to-r from-cyan-300 to-sky-400 hover:from-cyan-200 hover:to-sky-300 transition w-full sm:w-auto">Explore My Work</a>
+          <a href="https://www.linkedin.com/in/ayan-tejani-30b412106/" target="_blank" rel="noopener" class="px-7 py-3.5 rounded-full font-semibold border border-cyan-400/60 text-cyan-100 hover:bg-cyan-400/10 transition w-full sm:w-auto">LinkedIn</a>
+          <a href="Ayan%20Tejani%20Resume%20-%20M365%20Cloud%20Admin.pdf" target="_blank" rel="noopener" class="px-7 py-3.5 rounded-full font-semibold border border-violet-400/50 text-violet-100 hover:bg-violet-400/10 transition w-full sm:w-auto">View Resume</a>
+        </div>
+      </div>
+    </div>
+    <a href="#about" class="absolute bottom-8 left-1/2 -translate-x-1/2 text-cyan-300/70 scroll-cue" aria-label="Scroll down">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+    </a>
   </section>
 
-  <!-- Profile -->
-  <section id="profile" class="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-    <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 glow animate-fade">
-      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-6 sm:mb-8 text-cyan-400">Profile</h2>
-      <p class="text-sm sm:text-base lg:text-lg leading-relaxed mb-6">
-        AZ-104 certified Azure Administrator and Power Automate specialist with a track record of building production-grade automation systems used daily in hospitality and non-profit operations.
-        Currently serving as Microsoft 365 Administrator Intern at Holiday Inn Express and SharePoint & Power Automate Administrator at The Ismaili Canada — managing 30+ active flows, 10+ SharePoint sites, and permissions for 100+ users across both organizations.
+  <!-- About -->
+  <section id="about" data-bg="dawn" data-accent="#7aa2ff" data-accent2="#38bdf8" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <div class="glass reveal scale rounded-3xl p-7 sm:p-10 lg:p-12">
+      <h2 class="reveal clip text-3xl sm:text-4xl font-bold mb-7"><span class="accent-text">About</span></h2>
+      <p class="reveal up text-base sm:text-lg leading-relaxed mb-5 text-slate-200">
+        I am an AZ-104 certified Microsoft 365 and Cloud / Systems Administrator with a rare "architect and ship" breadth:
+        I run a full M365 tenant (Entra ID, Exchange Online, SharePoint, Teams, and Intune) hands-on, and I build the
+        automation and applications that make operations run themselves.
       </p>
-      <p class="text-sm sm:text-base lg:text-lg leading-relaxed mb-8">
-        Built and deployed an end-to-end Power Automate + SharePoint + Python pipeline that saves 1,500+ hours of manual work per year, running unattended 365 days/year with 99.9% reliability.
-        Expertise spans Azure IaaS, Windows Server, Power Platform, SharePoint Online, Python (ReportLab, FastAPI), and Opera PMS integrations.
-        Seeking Cloud / Power Platform / Automation roles in Toronto.
+      <p class="reveal up text-base sm:text-lg leading-relaxed mb-8 text-slate-300">
+        My path runs from hospitality operations into cloud: I turned a manual, error-prone nightly workflow into a fully
+        automated Power Automate + SharePoint + Python pipeline, then carried that same systems thinking into a national,
+        volunteer-built emergency-response platform. I am looking for a properly resourced full-time role in cloud, M365,
+        Power Platform, or systems administration across the Greater Toronto Area.
       </p>
-      <div class="grid grid-cols-3 gap-4 sm:gap-6 text-center">
-        <div class="bg-cyan-500/10 rounded-xl p-4">
-          <p class="text-2xl sm:text-3xl font-bold text-cyan-300">1,500+</p>
-          <p class="text-xs sm:text-sm text-gray-400 mt-1">hours saved annually</p>
-        </div>
-        <div class="bg-cyan-500/10 rounded-xl p-4">
-          <p class="text-2xl sm:text-3xl font-bold text-cyan-300">30+</p>
-          <p class="text-xs sm:text-sm text-gray-400 mt-1">Power Automate flows in production</p>
-        </div>
-        <div class="bg-cyan-500/10 rounded-xl p-4">
-          <p class="text-2xl sm:text-3xl font-bold text-cyan-300">99.9%</p>
-          <p class="text-xs sm:text-sm text-gray-400 mt-1">execution reliability</p>
-        </div>
+      <div class="stagger grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+        <div class="glass rounded-2xl p-5 text-center"><p class="font-display text-3xl sm:text-4xl font-bold accent-text" data-count="1500" data-suffix="+">0</p><p class="text-xs sm:text-sm text-slate-400 mt-1.5">manual hours saved / year</p></div>
+        <div class="glass rounded-2xl p-5 text-center"><p class="font-display text-3xl sm:text-4xl font-bold accent-text" data-count="98" data-suffix="+">0</p><p class="text-xs sm:text-sm text-slate-400 mt-1.5">production runs, zero failures</p></div>
+        <div class="glass rounded-2xl p-5 text-center"><p class="font-display text-3xl sm:text-4xl font-bold accent-text" data-count="40" data-suffix="+">0</p><p class="text-xs sm:text-sm text-slate-400 mt-1.5">Power Automate flows in production</p></div>
+        <div class="glass rounded-2xl p-5 text-center"><p class="font-display text-3xl sm:text-4xl font-bold accent-text" data-count="100" data-suffix="+">0</p><p class="text-xs sm:text-sm text-slate-400 mt-1.5">users administered</p></div>
       </div>
     </div>
   </section>
 
-<!-- Skills -->
-  <section id="skills" class="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-    <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 glow animate-fade">
-      <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 sm:mb-10 text-cyan-400">Skills</h2>
-
-      <div class="space-y-8">
-
-        <div>
-          <h3 class="text-xs sm:text-sm font-semibold uppercase tracking-widest text-cyan-500 mb-3">Automation & Power Platform</h3>
-          <div class="flex flex-wrap gap-2 sm:gap-3">
-            <span class="bg-cyan-500/20 rounded-lg px-3 py-2 text-cyan-300 font-medium text-sm">Power Automate</span>
-            <span class="bg-cyan-500/20 rounded-lg px-3 py-2 text-cyan-300 font-medium text-sm">SharePoint Online</span>
-            <span class="bg-cyan-500/20 rounded-lg px-3 py-2 text-cyan-300 font-medium text-sm">Power Platform workflows</span>
-            <span class="bg-cyan-500/20 rounded-lg px-3 py-2 text-cyan-300 font-medium text-sm">Microsoft Forms</span>
-            <span class="bg-cyan-500/20 rounded-lg px-3 py-2 text-cyan-300 font-medium text-sm">API integrations & webhooks</span>
-            <span class="bg-cyan-500/20 rounded-lg px-3 py-2 text-cyan-300 font-medium text-sm">JSON expressions</span>
-            <span class="bg-cyan-500/20 rounded-lg px-3 py-2 text-cyan-300 font-medium text-sm">Outlook automation</span>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-xs sm:text-sm font-semibold uppercase tracking-widest text-cyan-500 mb-3">Cloud & Infrastructure</h3>
-          <div class="flex flex-wrap gap-2 sm:gap-3">
-            <span class="bg-indigo-500/20 rounded-lg px-3 py-2 text-indigo-300 font-medium text-sm">Azure IaaS (AZ-104)</span>
-            <span class="bg-indigo-500/20 rounded-lg px-3 py-2 text-indigo-300 font-medium text-sm">Azure automation</span>
-            <span class="bg-indigo-500/20 rounded-lg px-3 py-2 text-indigo-300 font-medium text-sm">Microsoft 365 administration</span>
-            <span class="bg-indigo-500/20 rounded-lg px-3 py-2 text-indigo-300 font-medium text-sm">Windows Server</span>
-            <span class="bg-indigo-500/20 rounded-lg px-3 py-2 text-indigo-300 font-medium text-sm">Intune</span>
-            <span class="bg-indigo-500/20 rounded-lg px-3 py-2 text-indigo-300 font-medium text-sm">Power BI</span>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-xs sm:text-sm font-semibold uppercase tracking-widest text-cyan-500 mb-3">Development</h3>
-          <div class="flex flex-wrap gap-2 sm:gap-3">
-            <span class="bg-purple-500/20 rounded-lg px-3 py-2 text-purple-300 font-medium text-sm">Python</span>
-            <span class="bg-purple-500/20 rounded-lg px-3 py-2 text-purple-300 font-medium text-sm">FastAPI</span>
-            <span class="bg-purple-500/20 rounded-lg px-3 py-2 text-purple-300 font-medium text-sm">ReportLab</span>
-            <span class="bg-purple-500/20 rounded-lg px-3 py-2 text-purple-300 font-medium text-sm">PowerShell</span>
-            <span class="bg-purple-500/20 rounded-lg px-3 py-2 text-purple-300 font-medium text-sm">Git & GitHub</span>
-            <span class="bg-purple-500/20 rounded-lg px-3 py-2 text-purple-300 font-medium text-sm">Linux</span>
-          </div>
-        </div>
-
-        <div>
-          <h3 class="text-xs sm:text-sm font-semibold uppercase tracking-widest text-cyan-500 mb-3">Domain Knowledge</h3>
-          <div class="flex flex-wrap gap-2 sm:gap-3">
-            <span class="bg-teal-500/20 rounded-lg px-3 py-2 text-teal-300 font-medium text-sm">Opera PMS</span>
-            <span class="bg-teal-500/20 rounded-lg px-3 py-2 text-teal-300 font-medium text-sm">Night audit & revenue reconciliation</span>
-            <span class="bg-teal-500/20 rounded-lg px-3 py-2 text-teal-300 font-medium text-sm">PDF generation & processing</span>
-            <span class="bg-teal-500/20 rounded-lg px-3 py-2 text-teal-300 font-medium text-sm">M365 governance & access control</span>
-            <span class="bg-teal-500/20 rounded-lg px-3 py-2 text-teal-300 font-medium text-sm">PCI compliance</span>
-          </div>
-        </div>
-
-      </div>
+  <!-- Skills -->
+  <section id="skills" data-bg="nebula" data-accent="#c084fc" data-accent2="#a855f7" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+    <h2 class="reveal clip text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-12"><span class="accent-text">Skills</span></h2>
+    <div class="stagger grid gap-6 md:grid-cols-2">
+      <div class="glass card-hover rounded-3xl p-7"><h3 class="text-sm font-semibold uppercase tracking-widest mb-4" style="color:var(--accent)">Security &amp; IAM</h3><div class="flex flex-wrap gap-2.5">
+        <span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Microsoft 365 security</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Conditional Access</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">MFA</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">RBAC</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Account provisioning &amp; lifecycle</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Intune device compliance</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Incident response</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Audit logging</span></div></div>
+      <div class="glass card-hover rounded-3xl p-7"><h3 class="text-sm font-semibold uppercase tracking-widest mb-4" style="color:var(--accent)">Cloud &amp; Systems Admin</h3><div class="flex flex-wrap gap-2.5">
+        <span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Azure administration (AZ-104)</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Microsoft 365 administration</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Entra ID</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Exchange Online</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">SharePoint Online</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Windows Server</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Linux fundamentals</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Networking</span></div></div>
+      <div class="glass card-hover rounded-3xl p-7"><h3 class="text-sm font-semibold uppercase tracking-widest mb-4" style="color:var(--accent)">Automation &amp; Platform</h3><div class="flex flex-wrap gap-2.5">
+        <span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Power Automate</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Power Platform</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Microsoft Graph API</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">PowerShell</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Python</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">REST APIs &amp; webhooks</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">JSON expressions</span></div></div>
+      <div class="glass card-hover rounded-3xl p-7"><h3 class="text-sm font-semibold uppercase tracking-widest mb-4" style="color:var(--accent)">Development</h3><div class="flex flex-wrap gap-2.5">
+        <span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">JavaScript / TypeScript</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Node.js / Express</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">React / Vite</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">tRPC</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">CI/CD (GitHub Actions)</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Nginx / PM2 / VPS</span></div></div>
+      <div class="glass card-hover rounded-3xl p-7"><h3 class="text-sm font-semibold uppercase tracking-widest mb-4" style="color:var(--accent)">IT Support &amp; Systems</h3><div class="flex flex-wrap gap-2.5">
+        <span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Tier 1&ndash;3 troubleshooting</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">End-user support</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Windows &amp; M365 apps</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Hardware (printers, POS, keycard)</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Wi-Fi / networking</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Access management</span></div></div>
+      <div class="glass card-hover rounded-3xl p-7"><h3 class="text-sm font-semibold uppercase tracking-widest mb-4" style="color:var(--accent)">Enterprise Platforms</h3><div class="flex flex-wrap gap-2.5">
+        <span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Salesforce</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Amadeus Delphi</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Opera PMS</span><span class="chip bg-white/5 text-slate-100 rounded-lg px-3 py-2 text-sm">Sage 300 (GL via API)</span></div></div>
     </div>
   </section>
 
   <!-- Experience -->
-  <section id="experience" class="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
-    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 lg:mb-16 text-cyan-400">Experience</h2>
-    <div class="space-y-8 sm:space-y-12">
-
-      <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 glow hover:scale-[1.02] transition">
-        <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-cyan-300">Microsoft 365 Administrator Intern — Holiday Inn Express</h3>
-        <p class="text-cyan-500 mb-4 text-sm sm:text-base">Jan 2025 — Apr 2026 &nbsp;·&nbsp; Markham, ON</p>
-        <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base list-disc list-inside">
-          <li>Designed, deployed, and administered a fully automated Microsoft 365 solution using Power Automate, SharePoint Online, and Outlook — executing nightly with zero manual intervention.</li>
-          <li>Built automation to download, parse, rename, classify, and archive PMS reports into structured, date-based SharePoint libraries, then distribute finalized report sets to management automatically.</li>
-          <li>Eliminated 4–5 hours of manual work per night, saving 1,500+ hours annually, with 99.9% execution reliability and no post-deployment manual maintenance.</li>
-          <li>Developed a Python-based reporting service (hosted on HuggingFace) to transform raw operational data into branded PDF summaries, reducing 30–45 minutes of nightly formatting per run.</li>
-          <li>Administered Microsoft 365 services including SharePoint permissions, Power Automate flow governance, Outlook integration, and access control.</li>
-          <li>Acted as overnight IT support escalation, resolving 95% of incidents immediately involving Wi-Fi, PMS, keycard systems, M365 apps, printers, and POS terminals.</li>
-        </ul>
+  <section id="experience" data-bg="aurora" data-accent="#2dd4bf" data-accent2="#38bdf8" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+    <h2 class="reveal clip text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-14"><span class="accent-text">Experience</span></h2>
+    <div class="timeline space-y-12">
+      <div class="tl-item reveal left">
+        <span class="tl-dot"></span>
+        <div class="glass card-hover rounded-3xl p-7 sm:p-9">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-3">
+            <h3 class="text-xl sm:text-2xl font-bold" style="color:var(--accent)">Microsoft 365 &amp; Systems Administrator</h3>
+            <span class="text-sm text-slate-400 whitespace-nowrap">Jan 2026 &ndash; Present</span>
+          </div>
+          <p class="text-slate-300 mb-5 text-sm">Holiday Inn Express &nbsp;|&nbsp; Markham, ON</p>
+          <ul class="space-y-2.5 text-sm sm:text-base text-slate-200 list-disc list-outside pl-5">
+            <li>Administer a full Microsoft 365 tenant (Entra ID, Exchange Online, SharePoint, Teams, and Intune), including user provisioning, licensing, and device compliance.</li>
+            <li>Manage identity and access operations: MFA, Conditional Access, role-based access control (RBAC), and user lifecycle administration.</li>
+            <li>Designed and deployed a fully automated M365 reporting solution (Power Automate, SharePoint, Outlook) that eliminated 4&ndash;5 hours of manual work nightly (1,500+ hours annually) with zero failures across 98+ production runs.</li>
+            <li>Developed a Python reporting service (hosted on Hugging Face) transforming raw operational data into branded PDF summaries.</li>
+            <li>Support enterprise platforms including Salesforce and Amadeus Delphi, ensuring secure access, availability, and data integrity.</li>
+            <li>Act as overnight IT support escalation, resolving 95% of incidents on first contact across Wi-Fi, PMS, keycard systems, M365 apps, printers, and POS terminals.</li>
+          </ul>
+        </div>
       </div>
-
-      <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 glow hover:scale-[1.02] transition">
-        <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-cyan-300">SharePoint & Power Automate Administrator — The Ismaili Canada</h3>
-        <p class="text-cyan-500 mb-4 text-sm sm:text-base">Sep 2025 — Present &nbsp;·&nbsp; Toronto, ON</p>
-        <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base list-disc list-inside">
-          <li>Administered 10+ SharePoint Online sites and 25+ lists/libraries, managing role-based permissions for 100+ users across regional and national teams while enforcing M365 governance and data security standards.</li>
-          <li>Built and maintained 30+ Power Automate flows integrating SharePoint, Microsoft Forms, and Outlook — cutting manual coordination time by 40–60% and improving response SLAs for approvals and notifications.</li>
-          <li>Designed end-to-end event and operations workflows handling 1,000+ records annually, ensuring data accuracy, auditability, and centralized reporting for leadership.</li>
-          <li>Led requirements gathering, documentation, and optimization of Power Platform solutions, reducing recurring support issues by 30% and enabling scalable, low-maintenance automation.</li>
-        </ul>
+      <div class="tl-item reveal left">
+        <span class="tl-dot"></span>
+        <div class="glass card-hover rounded-3xl p-7 sm:p-9">
+          <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-3">
+            <h3 class="text-xl sm:text-2xl font-bold" style="color:var(--accent)">SharePoint &amp; Power Automate Administrator</h3>
+            <span class="text-sm text-slate-400 whitespace-nowrap">Sep 2025 &ndash; Present</span>
+          </div>
+          <p class="text-slate-300 mb-5 text-sm">The Ismaili Canada (Voluntary) &nbsp;|&nbsp; Toronto, ON</p>
+          <ul class="space-y-2.5 text-sm sm:text-base text-slate-200 list-disc list-outside pl-5">
+            <li>Administer 10+ SharePoint Online sites and 25+ lists/libraries, managing role-based permissions for 100+ users across regional and national teams while enforcing M365 governance.</li>
+            <li>Built and maintain 30+ Power Automate flows integrating SharePoint, Microsoft Forms, and Outlook, cutting manual coordination time by 40&ndash;60% and improving approval/notification SLAs.</li>
+            <li>Designed end-to-end event and operations workflows handling 1,000+ records annually, ensuring data accuracy, auditability, and centralized reporting for leadership.</li>
+            <li>Led requirements gathering, documentation, and optimization of Power Platform solutions, reducing recurring support issues by 30%.</li>
+          </ul>
+        </div>
       </div>
-
-      <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 glow hover:scale-[1.02] transition">
-        <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-cyan-300">Night Auditor — Holiday Inn Express</h3>
-        <p class="text-cyan-500 mb-4 text-sm sm:text-base">Aug 2025 — Dec 2025 &nbsp;·&nbsp; Markham, ON</p>
-        <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base list-disc list-inside">
-          <li>Performed complete night audit operations, reconciling 150–250 daily transactions across credit cards, cash, room charges, and third-party bookings with 99.9% accuracy in Opera PMS.</li>
-          <li>Verified all revenue streams, prepared nightly audit packages, and generated daily revenue and occupancy reports for accurate financial handover to management.</li>
-          <li>Served as overnight operations lead, resolving guest issues and coordinating with on-call teams to maintain service continuity.</li>
-          <li>Enforced cash handling, PCI, and brand audit standards — identifying and escalating variances to prevent revenue leakage.</li>
-        </ul>
-      </div>
-
     </div>
   </section>
 
-  <!-- Projects -->
-  <section id="projects" class="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-cyan-900/20">
-    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 lg:mb-16 text-cyan-400">Projects</h2>
-    <div class="max-w-6xl mx-auto grid gap-8 sm:gap-10 md:grid-cols-2">
-      
-      <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 glow hover:scale-105 transition">
-        <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 text-cyan-300">Enterprise PMS Daily Reporting Automation</h3>
-        <p class="text-lg sm:text-xl lg:text-2xl mb-6">Power Automate + SharePoint + Outlook</p>
-        <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base lg:text-lg mb-6 sm:mb-8 list-disc list-inside">
-          <li>Built end-to-end Power Automate + SharePoint solution that fully automates nightly property-management reports.</li>
-          <li>Ingests reports from Outlook → parses and renames using content-based logic (contains(), toLower(), replace()) → stores in dated SharePoint folders → emails clean attachments using base64ToBinary().</li>
-          <li>Eliminated 4–5 hours of manual night-audit work nightly — 1,500+ hours saved per year with 100% reliability since go-live.</li>
-          <li>Resolved ~200 failed runs during development; now runs unattended 365 days/year.</li>
-        </ul>
-        <a href="https://drive.google.com/file/d/19FWHkHy3vxEv6MEFBuqg6UPHUErIzUqk/view?usp=sharing" class="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition text-sm sm:text-base">
-          Documentation →
-        </a>
-      </div>
+  <!-- Projects (horizontal pinned scroll on desktop) -->
+  <section id="projects" data-bg="deep" data-accent="#818cf8" data-accent2="#a855f7">
+    <div class="hscroll-section">
+      <div class="hscroll-sticky">
+        <div class="px-6 sm:px-[6vw] mb-8">
+          <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold"><span class="accent-text">Projects</span></h2>
+          <p class="text-slate-400 mt-2 text-sm sm:text-base">Real, shipped systems. <span class="hidden lg:inline">Scroll to move sideways through the gallery.</span></p>
+        </div>
+        <div class="hscroll-track" id="htrack">
 
-      <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 glow hover:scale-105 transition">
-        <h3 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 text-cyan-300">Automated Night Audit PDF Generator</h3>
-        <p class="text-lg sm:text-xl lg:text-2xl mb-6">Python • ReportLab • FastAPI • HuggingFace Spaces</p>
-        <ul class="space-y-2 sm:space-y-3 text-sm sm:text-base lg:text-lg mb-6 sm:mb-8 list-disc list-inside">
-          <li>Live at: <a href="https://huggingface.co/spaces/ayanhiex/greenerstay" class="text-cyan-400 underline">huggingface.co/spaces/ayanhiex/greenerstay</a></li>
-          <li>Python microservice (ReportLab + FastAPI) that receives JSON data from Power Automate and returns professionally formatted, branded PDF reports instantly.</li>
-          <li>Generates Guest In-House, Manager Flash, Revenue Summary, and other PDFs — eliminating 30–45 minutes of nightly manual formatting in Microsoft Word.</li>
-          <li>Integrated into existing Power Automate + SharePoint pipeline via HTTP POST → base64 response, enabling 100% end-to-end automated report creation, storage, and email delivery.</li>
-          <li>Handles dynamic tables, date logic, and error states — runs 365 days/year with zero maintenance.</li>
-        </ul>
-        <a href="https://drive.google.com/file/d/1yzxbZmR9Dtw1l9lX6Zq8zAtG6QJoVRgD/view?usp=sharing" class="inline-block px-4 sm:px-6 py-2 sm:py-3 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition text-sm sm:text-base">
-          Documentation →
-        </a>
+          <article class="hcard glass card-hover rounded-3xl p-7 sm:p-9 relative overflow-hidden">
+            <span class="absolute top-6 right-6 text-xs font-semibold tracking-widest uppercase px-3 py-1 rounded-full border" style="border-color:color-mix(in srgb,var(--accent) 40%,transparent); color:var(--accent)">Flagship</span>
+            <h3 class="text-2xl font-bold mb-3 text-white">NSSEP ERP Digital Platform</h3>
+            <p class="text-xs mb-4" style="color:var(--accent)">Static HTML &middot; Vanilla JS &middot; jsPDF &middot; pdf-lib &middot; Power Automate (10 flows) &middot; SharePoint &middot; GitHub Pages</p>
+            <p class="text-sm text-slate-200 leading-relaxed mb-4">Centralized web platform replacing the manual, paper-based Emergency Response Plan workflow across Canadian Jamatkhanas. Captures a 13-section, 157-field ERP through a guided form, auto-generates a formatted PDF client-side, stores submissions in SharePoint, and provides a per-event dashboard, backed by 10 Power Automate flows.</p>
+            <p class="text-sm text-slate-300">BC pilot live since May 2026 (15 JKs). National rollout to 87 JKs projected to save ~17,500 volunteer-hours/year at $0 recurring cost.</p>
+          </article>
+
+          <article class="hcard glass card-hover rounded-3xl p-7 sm:p-9">
+            <h3 class="text-2xl font-bold mb-3 text-white">Night Audit Report Automation</h3>
+            <p class="text-xs mb-4" style="color:var(--accent)">Power Automate &middot; SharePoint &middot; Exchange Online</p>
+            <p class="text-sm text-slate-200 leading-relaxed mb-4">2-flow solution that fully automated the nightly download, renaming, SharePoint archival, and distribution of 14 PMS PDF reports. Eliminated 4&ndash;5 hrs nightly (1,500+ hrs/year), processed 98+ reports with zero failures.</p>
+            <a href="https://huggingface.co/spaces/ayanhiex/greenerstay" target="_blank" rel="noopener" class="text-sm underline underline-offset-4" style="color:var(--accent)">Live PDF service &rarr;</a>
+          </article>
+
+          <article class="hcard glass card-hover rounded-3xl p-7 sm:p-9">
+            <h3 class="text-2xl font-bold mb-3 text-white">Live KPI Wallboard Dashboard</h3>
+            <p class="text-xs mb-4" style="color:var(--accent)">Node.js &middot; Microsoft Graph API &middot; Server-Sent Events &middot; SharePoint</p>
+            <p class="text-sm text-slate-200 leading-relaxed">Real-time hotel occupancy and KPI display. Graph API webhooks ingest live SharePoint CSV data; Server-Sent Events push updates instantly to a wall-mounted 1920&times;1080 display.</p>
+          </article>
+
+          <article class="hcard glass card-hover rounded-3xl p-7 sm:p-9">
+            <h3 class="text-2xl font-bold mb-3 text-white">Guest Satisfaction Dashboard</h3>
+            <p class="text-xs mb-4" style="color:var(--accent)">Node.js &middot; Express &middot; Nginx &middot; PM2 &middot; GitHub Actions &middot; VPS</p>
+            <p class="text-sm text-slate-200 leading-relaxed">Node.js/Express app surfacing Medallia survey data. Deployed on a VPS with Nginx reverse proxy, PM2, HTTPS via Let's Encrypt, and a GitHub Actions CI/CD pipeline on push to main.</p>
+          </article>
+
+          <article class="hcard glass card-hover rounded-3xl p-7 sm:p-9">
+            <h3 class="text-2xl font-bold mb-3 text-white">SCC Financial Dashboard</h3>
+            <p class="text-xs mb-4" style="color:var(--accent)">React &middot; Vite &middot; TypeScript &middot; tRPC &middot; Sage 300 (GL via API)</p>
+            <p class="text-sm text-slate-200 leading-relaxed">Application integrating Sage 300 general-ledger data. Served as both developer and direct Sage 300 account contact for API access, Web Screens installation, credentials, and Org IDs.</p>
+          </article>
+
+          <article class="hcard glass card-hover rounded-3xl p-7 sm:p-9">
+            <h3 class="text-2xl font-bold mb-3 text-white">Corporate Website (SCC)</h3>
+            <p class="text-xs mb-4" style="color:var(--accent)">React 18 &middot; Vite &middot; TypeScript &middot; Resend</p>
+            <p class="text-sm text-slate-200 leading-relaxed">Multi-page corporate site built from scratch: DNS configuration, SSG-based SEO (react-helmet-async, vite-ssg), and transactional email via Resend.</p>
+          </article>
+
+          <article class="hcard glass card-hover rounded-3xl p-7 sm:p-9">
+            <h3 class="text-2xl font-bold mb-3 text-white">HIEX Sales Dashboard &amp; More</h3>
+            <p class="text-xs mb-4" style="color:var(--accent)">React 18 &middot; TypeScript &middot; PWA &middot; NFC</p>
+            <p class="text-sm text-slate-200 leading-relaxed">Self-contained SPA consolidating CRM, tasks, booking calendar, pipeline, and 8 email templates. Plus a Hotel Room Maintenance Tracker, Parda (E2E-encrypted PWA), and an NFC-based Google Review tracker.</p>
+          </article>
+
+        </div>
+        <div class="hbar-wrap"><div class="hbar" id="hbar"></div></div>
       </div>
     </div>
   </section>
 
   <!-- Education & Certs -->
-  <section id="education" class="py-12 sm:py-16 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-8 sm:mb-12 lg:mb-16 text-cyan-400">Education & Certifications</h2>
-    <div class="grid gap-8 sm:gap-10 md:grid-cols-2">
-      <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 glow">
-        <h3 class="text-lg sm:text-xl lg:text-2xl font-bold mb-4 sm:mb-6 text-cyan-300">Education</h3>
-        <ul class="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg">
-          <li><strong>George Brown College</strong> — Cloud Computing, Post-Graduate Diploma • May 2025 – Apr 2026 · Toronto, ON</li>
-          <li><strong>Cambrian College</strong> — IT Business Analysis, Post-Graduate Diploma • May 2024 – Feb 2025 · Sudbury, ON</li>
-          <li><strong>Pune University</strong> — Bachelor of Computer Applications • Nov 2020 – Jul 2023 · India</li>
+  <section id="education" data-bg="dawn" data-accent="#7aa2ff" data-accent2="#a855f7" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
+    <h2 class="reveal clip text-3xl sm:text-4xl lg:text-5xl font-bold text-center mb-14"><span class="accent-text">Education &amp; Certifications</span></h2>
+    <div class="grid gap-6 md:grid-cols-2">
+      <div class="glass reveal left card-hover rounded-3xl p-7 sm:p-9">
+        <h3 class="text-xl font-bold mb-6" style="color:var(--accent)">Education</h3>
+        <ul class="space-y-5 text-sm sm:text-base text-slate-200">
+          <li><p class="font-semibold">George Brown College</p><p class="text-slate-400">Cloud Computing, Post-Graduate Diploma (Honours)</p><p class="text-xs text-slate-500 mt-1">May 2025 &ndash; Apr 2026 &middot; Toronto, ON</p></li>
+          <li><p class="font-semibold">Cambrian College</p><p class="text-slate-400">IT Business Analysis, Post-Graduate Diploma</p><p class="text-xs text-slate-500 mt-1">May 2024 &ndash; Feb 2025 &middot; Sudbury, ON</p></li>
+          <li><p class="font-semibold">Pune University</p><p class="text-slate-400">Bachelor of Computer Applications</p><p class="text-xs text-slate-500 mt-1">Nov 2020 &ndash; Jul 2023 &middot; India</p></li>
         </ul>
       </div>
-      <div class="glass rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-10 glow">
-        <h3 class="text-lg sm:text-xl lg:text-2xl font-bold mb-4 sm:mb-6 text-cyan-300">Certifications</h3>
-          <ul class="space-y-4 sm:space-y-6 text-sm sm:text-base lg:text-lg">
-          <li>
-            <p>Microsoft Azure Administrator Associate (AZ-104) &mdash; Nov 2025</p>
-            <a href="https://learn.microsoft.com/api/credentials/share/en-us/Ayan2301/AA232471F51D36C5?sharingId=BF77A1974F525C27" class="inline-block mt-2 sm:mt-3 px-4 sm:px-6 py-2 sm:py-3 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition w-full text-center text-sm sm:text-base">
-              See Certificate &rarr;
-            </a>
-          </li>
-          <li>
-            <p>Microsoft Azure Fundamentals (AZ-900) &mdash; Aug 2025</p>
-            <a href="https://learn.microsoft.com/api/credentials/share/en-us/Ayan2301/1C7F561F244229DB?sharingId=BF77A1974F525C27" class="inline-block mt-2 sm:mt-3 px-4 sm:px-6 py-2 sm:py-3 bg-cyan-500 text-black font-bold rounded-full hover:bg-cyan-400 transition w-full text-center text-sm sm:text-base">
-              See Certificate &rarr;
-            </a>
-          </li>
+      <div class="glass reveal right card-hover rounded-3xl p-7 sm:p-9">
+        <h3 class="text-xl font-bold mb-6" style="color:var(--accent)">Certifications</h3>
+        <ul class="space-y-5 text-sm sm:text-base">
+          <li><p class="font-semibold text-slate-100">Microsoft Azure Administrator Associate (AZ-104)</p><p class="text-xs text-slate-500 mt-1 mb-3">Microsoft &middot; Nov 2025</p>
+            <a href="https://learn.microsoft.com/api/credentials/share/en-us/Ayan2301/AA232471F51D36C5?sharingId=BF77A1974F525C27" target="_blank" rel="noopener" class="inline-block px-5 py-2.5 rounded-full text-sm font-semibold border transition hover:bg-white/5" style="border-color:color-mix(in srgb,var(--accent) 50%,transparent); color:var(--accent)">See Certificate &rarr;</a></li>
+          <li class="pt-2"><p class="font-semibold text-slate-100">Microsoft Azure Fundamentals (AZ-900)</p><p class="text-xs text-slate-500 mt-1 mb-3">Microsoft &middot; Aug 2025</p>
+            <a href="https://learn.microsoft.com/api/credentials/share/en-us/Ayan2301/1C7F561F244229DB?sharingId=BF77A1974F525C27" target="_blank" rel="noopener" class="inline-block px-5 py-2.5 rounded-full text-sm font-semibold border transition hover:bg-white/5" style="border-color:color-mix(in srgb,var(--accent) 50%,transparent); color:var(--accent)">See Certificate &rarr;</a></li>
         </ul>
       </div>
     </div>
   </section>
 
-  <footer class="py-8 sm:py-12 lg:py-16 text-center text-gray-400 px-4">
-    <p class="text-sm sm:text-base lg:text-xl">&copy; 2025 Ayan Tejani &mdash; Built with blood, sweat, and Power Automate</p>
+  <!-- Contact -->
+  <section id="contact" data-bg="space" data-accent="#38e1ff" data-accent2="#6366f1" class="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+    <div class="glass reveal scale rounded-3xl p-8 sm:p-12 text-center">
+      <h2 class="text-3xl sm:text-4xl font-bold mb-4"><span class="accent-text">Let's build something</span></h2>
+      <p class="text-slate-300 max-w-xl mx-auto mb-8">Open to full-time Cloud, Microsoft 365, Power Platform, and Systems Administration roles across the Greater Toronto Area.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <a href="mailto:ayantejani@gmail.com" class="px-7 py-3.5 rounded-full font-semibold text-[#04060f] bg-gradient-to-r from-cyan-300 to-sky-400 hover:from-cyan-200 hover:to-sky-300 transition w-full sm:w-auto">Email Me</a>
+        <a href="https://www.linkedin.com/in/ayan-tejani-30b412106/" target="_blank" rel="noopener" class="px-7 py-3.5 rounded-full font-semibold border border-cyan-400/60 text-cyan-100 hover:bg-cyan-400/10 transition w-full sm:w-auto">LinkedIn</a>
+        <a href="Ayan%20Tejani%20Resume%20-%20M365%20Cloud%20Admin.pdf" target="_blank" rel="noopener" class="px-7 py-3.5 rounded-full font-semibold border border-violet-400/50 text-violet-100 hover:bg-violet-400/10 transition w-full sm:w-auto">View Resume</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-12 text-center text-slate-500 px-4 border-t" style="border-color:var(--line)">
+    <p class="text-sm">&copy; 2026 Ayan Tejani &middot; Toronto, ON &middot; Built with Power Automate, code, and caffeine.</p>
   </footer>
 
   <script>
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', e => {
-        const target = document.querySelector(anchor.getAttribute('href'));
-        if (!target) return;
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
-      });
-    });
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Mobile nav toggle
-    const toggle = document.getElementById('navToggle');
-    const menu = document.getElementById('navMenu');
-    if (toggle && menu) {
-      toggle.addEventListener('click', () => {
-        const expanded = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', (!expanded).toString());
-        menu.classList.toggle('hidden');
-        menu.classList.toggle('flex');
-      });
+    /* ===== Constellation cloud-network canvas (recolors per section, parallax) ===== */
+    (function () {
+      const canvas = document.getElementById('stars'), ctx = canvas.getContext('2d');
+      let w, h, nodes, dpr = Math.min(devicePixelRatio || 1, 2), scrollY = 0;
+      let cur = [120,160,255], target = [120,160,255];
 
-      menu.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          if (window.innerWidth < 768) {
-            menu.classList.add('hidden');
-            menu.classList.remove('flex');
-            toggle.setAttribute('aria-expanded', 'false');
+      function resize() {
+        w = canvas.width = innerWidth * dpr; h = canvas.height = innerHeight * dpr;
+        canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px';
+        const count = Math.min(90, Math.floor((innerWidth * innerHeight) / 16000));
+        nodes = Array.from({ length: count }, () => ({
+          x: Math.random()*w, y: Math.random()*h,
+          vx: (Math.random()-.5)*0.12*dpr, vy: (Math.random()-.5)*0.12*dpr,
+          r: (Math.random()*1.4+0.5)*dpr, z: Math.random()*0.6+0.4
+        }));
+      }
+      addEventListener('scroll', () => { scrollY = scrollY*0 + window.scrollY; }, { passive: true });
+      window.__setNet = (rgb) => { target = rgb; };
+
+      const MAX = 130;
+      function frame() {
+        for (let i=0;i<3;i++) cur[i] += (target[i]-cur[i])*0.04;
+        const [r,g,b] = cur.map(Math.round);
+        ctx.clearRect(0,0,w,h);
+        const par = scrollY*0.12*dpr;
+        for (const n of nodes) {
+          n.x += n.vx; n.y += n.vy;
+          if (n.x<0) n.x+=w; if (n.x>w) n.x-=w; if (n.y<0) n.y+=h; if (n.y>h) n.y-=h;
+        }
+        // links
+        const md = MAX*dpr;
+        for (let i=0;i<nodes.length;i++) {
+          const a = nodes[i], ay=(a.y - par*a.z + h)% h;
+          for (let j=i+1;j<nodes.length;j++) {
+            const c = nodes[j], cy=(c.y - par*c.z + h)% h;
+            const dx=a.x-c.x, dy=ay-cy, d=Math.hypot(dx,dy);
+            if (d<md) { ctx.strokeStyle=`rgba(${r},${g},${b},${(1-d/md)*0.22})`; ctx.lineWidth=dpr*0.6;
+              ctx.beginPath(); ctx.moveTo(a.x,ay); ctx.lineTo(c.x,cy); ctx.stroke(); }
           }
-        });
-      });
-    }
+        }
+        // nodes
+        for (const n of nodes) { const ny=(n.y - par*n.z + h)% h;
+          ctx.fillStyle=`rgba(${r},${g},${b},0.9)`; ctx.beginPath(); ctx.arc(n.x,ny,n.r,0,Math.PI*2); ctx.fill(); }
+        requestAnimationFrame(frame);
+      }
+      resize(); addEventListener('resize', resize);
+      if (!reduce) frame(); else { // static paint
+        const [r,g,b]=cur; ctx.fillStyle=`rgba(${r},${g},${b},.7)`;
+        for (const n of nodes){ ctx.beginPath(); ctx.arc(n.x,n.y,n.r,0,Math.PI*2); ctx.fill(); }
+      }
+    })();
+
+    /* ===== Per-section theme: cross-fade bg layers + swap accent + recolor network ===== */
+    (function () {
+      const hex2rgb = (hx) => { const n=parseInt(hx.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; };
+      const layers = [...document.querySelectorAll('.bg-layer')];
+      const root = document.documentElement;
+      const setTheme = (sec) => {
+        const bg = sec.dataset.bg, a = sec.dataset.accent, a2 = sec.dataset.accent2;
+        layers.forEach(l => l.classList.toggle('active', l.dataset.bg === bg));
+        if (a)  root.style.setProperty('--accent', a);
+        if (a2) root.style.setProperty('--accent-2', a2);
+        if (a && window.__setNet) window.__setNet(hex2rgb(a));
+      };
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) setTheme(e.target); });
+      }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+      document.querySelectorAll('section[data-bg]').forEach(s => io.observe(s));
+    })();
+
+    /* ===== Reveals + kinetic + stagger ===== */
+    (function () {
+      document.querySelectorAll('.stagger').forEach(g => [...g.children].forEach((c,i)=>c.style.transitionDelay=(i*70)+'ms'));
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal, .stagger, .kinetic').forEach(el => io.observe(el));
+    })();
+
+    /* ===== Count-up stats ===== */
+    (function () {
+      const fmt = (n) => n.toLocaleString('en-US');
+      const run = (el) => {
+        const end = +el.dataset.count, suf = el.dataset.suffix || ''; let t0 = null;
+        const step = (ts) => { t0 ??= ts; const p = Math.min((ts-t0)/1400,1);
+          el.textContent = fmt(Math.floor((1-Math.pow(1-p,3))*end)) + suf;
+          if (p<1) requestAnimationFrame(step); };
+        requestAnimationFrame(step);
+      };
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { reduce ? e.target.textContent = (+e.target.dataset.count).toLocaleString('en-US') + (e.target.dataset.suffix||'') : run(e.target); io.unobserve(e.target); } });
+      }, { threshold: 0.6 });
+      document.querySelectorAll('[data-count]').forEach(el => io.observe(el));
+    })();
+
+    /* ===== Horizontal pinned projects ===== */
+    (function () {
+      const useH = innerWidth >= 1024 && !reduce;
+      document.body.classList.toggle('no-h', !useH);
+      const section = document.querySelector('#projects .hscroll-section');
+      const track = document.getElementById('htrack');
+      const bar = document.getElementById('hbar');
+      if (!useH || !section || !track) return;
+      let dist = 0;
+      function measure() {
+        dist = Math.max(0, track.scrollWidth - innerWidth + 1);
+        section.style.height = (innerHeight + dist) + 'px';
+      }
+      function onScroll() {
+        const rect = section.getBoundingClientRect();
+        const total = section.offsetHeight - innerHeight;
+        const p = Math.min(Math.max(-rect.top / total, 0), 1);
+        track.style.transform = 'translateX(' + (-p * dist) + 'px)';
+        bar.style.width = (p*100) + '%';
+      }
+      measure(); onScroll();
+      addEventListener('resize', () => { measure(); onScroll(); });
+      addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('load', () => { measure(); onScroll(); });
+    })();
+
+    /* ===== Progress bar + active nav + smooth scroll + mobile nav ===== */
+    (function () {
+      const bar = document.getElementById('progress');
+      addEventListener('scroll', () => {
+        const sc = document.documentElement.scrollTop;
+        const ht = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        bar.style.width = (ht ? (sc/ht)*100 : 0) + '%';
+      }, { passive: true });
+
+      const links = [...document.querySelectorAll('#navMenu a[href^="#"]')];
+      const map = {}; links.forEach(l => map[l.getAttribute('href').slice(1)] = l);
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting && map[e.target.id]) { links.forEach(l=>l.classList.remove('active')); map[e.target.id].classList.add('active'); } });
+      }, { threshold: .4 });
+      ['about','skills','experience','projects','education'].forEach(id => { const el=document.getElementById(id); if (el) io.observe(el); });
+
+      document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', (e) => {
+        const t = document.querySelector(a.getAttribute('href')); if (!t) return; e.preventDefault(); t.scrollIntoView({ behavior:'smooth' });
+      }));
+      const toggle = document.getElementById('navToggle'), menu = document.getElementById('navMenu');
+      if (toggle && menu) {
+        toggle.addEventListener('click', () => { const ex=toggle.getAttribute('aria-expanded')==='true'; toggle.setAttribute('aria-expanded',(!ex).toString()); menu.classList.toggle('hidden'); menu.classList.toggle('flex'); });
+        menu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => { if (innerWidth<768){ menu.classList.add('hidden'); menu.classList.remove('flex'); toggle.setAttribute('aria-expanded','false'); } }));
+      }
+    })();
   </script>
 </body>
 </html>
